@@ -10,7 +10,7 @@ import Home from "./components/Home/Home";
 import PageNotFound from "./components/PageNoteFound/PageNotFound";
 
 function App() {
-  let id = JSON.parse(localStorage.getItem("login")).lastActive;
+  let id = JSON.parse(localStorage.getItem("login")).lastActive || 1;
 
   return (
     <Router>
