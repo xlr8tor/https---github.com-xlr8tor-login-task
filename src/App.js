@@ -10,14 +10,17 @@ import Home from "./components/Home/Home";
 import PageNotFound from "./components/PageNoteFound/PageNotFound";
 
 function App() {
-  let id = JSON.parse(localStorage.getItem("login")).lastActive || 1;
+  let id;
+  try {
+    id = JSON.parse(localStorage.getItem("login")).lastActive;
+  } catch (e) {}
 
   return (
     <Router>
       <Routes>
         <Route exact path="/login" element={<Form />} />
-        <Route exact path="/" element={<Navigate to={`/${id}`} />} />
         <Route exact path="/:id" element={<Home />} />
+        <Route exact path="/" element={<Navigate to={`/${id || 1}`} />} />
         <Route exact path="/*" element={<PageNotFound />} />
         <Route exact path="/:id/*" element={<PageNotFound />} />
       </Routes>
