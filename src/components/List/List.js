@@ -108,7 +108,7 @@ const List = () => {
       window.removeEventListener("storage", onStorage);
       window.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  });
+  }, [filteredUsers, isVisible, id, getFilteredUser, countdown]);
 
   return (
     <Container className="content__wrapper">

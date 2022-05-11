@@ -1,10 +1,20 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Header = ({ username }) => {
+  let { id } = useParams();
   let navigate = useNavigate();
   const redirect = () => {
-    localStorage.removeItem("username");
+    let result = JSON.parse(localStorage.getItem("login"));
+    let updatedUsers = result.users.filter((user) => user.id !== +id);
+    localStorage.setItem(
+      "login",
+      JSON.stringify({
+        nextID: result.nextID,
+        lastActive: result.lastActive,
+        users: updatedUsers,
+      })
+    );
     navigate("/login");
   };
 
@@ -19,6 +29,11 @@ const Header = ({ username }) => {
         </div>
         <nav className="nav__menu">
           <ul className="nav__list">
+            <li className="nav__item">
+              <Link to="/login" className="pd-2" target="_blank">
+                Signin with different user?{" "}
+              </Link>
+            </li>
             <li className="nav__item">
               <input type="submit" value="Logout" onClick={redirect} />
             </li>
@@ -44,9 +59,13 @@ const Wrapper = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-inline: 1rem;
+    margin-inline: 40px;
   }
 
+  .nav__list {
+    display: flex;
+    align-items: center;
+  }
   .header input[type="submit"] {
     border-radius: var(--loginBorderRadus);
     padding: 0.5rem 1.125rem;
@@ -80,5 +99,9 @@ const Wrapper = styled.header`
   .username {
     font-weight: 700;
     margin-inline-start: 1rem;
+  }
+
+  .pd-2 {
+    margin-right: 2rem;
   }
 `;
