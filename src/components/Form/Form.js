@@ -15,21 +15,24 @@ const Form = () => {
   const setUsername = () => {
     let result = getUsername();
     if (result.users) {
-      localStorage.setItem(
-        "login",
-        JSON.stringify({
-          nextID: ++result.nextID,
-          lastActive: 0,
-          users: [
-            ...result.users,
-            {
-              username: inputValue.toLowerCase(),
-              id: result.nextID,
-              status: "active",
-            },
-          ],
-        })
-      );
+      let values = result.users.map((user) => user.username);
+      if (!values.includes(inputValue.toLowerCase())) {
+        localStorage.setItem(
+          "login",
+          JSON.stringify({
+            nextID: ++result.nextID,
+            lastActive: 0,
+            users: [
+              ...result.users,
+              {
+                username: inputValue.toLowerCase(),
+                id: result.nextID,
+                status: "active",
+              },
+            ],
+          })
+        );
+      }
     }
   };
 
@@ -42,8 +45,10 @@ const Form = () => {
             e.preventDefault();
             setUsername();
             let id = JSON.parse(localStorage.getItem("login")).nextID;
+            window.open(`/${id}`, inputValue).focus();
             setInputValue("");
-            navigate(`/${id}`);
+
+            // navigate(`/${id}`);
           }}
         >
           <div className="form__field">
